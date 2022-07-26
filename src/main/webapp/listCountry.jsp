@@ -27,7 +27,7 @@ int count = obj2.getCountryWSDL().length;
 
 for(int i =0;i<count;i++)
 {
-	//String[] SplitCountry = obj2.getCountryWSDL().get(i).split(";");
+	
 	String[] SplitCountry = obj2.getCountryWSDL()[i].split(";");
 	
 %>
@@ -45,9 +45,27 @@ for(int i =0;i<count;i++)
 <%
 if(request.getParameter("Submit") != null) {
 %>
-<h4>Country Code </h4>
+<h4>Country Details </h4>
 <%
-	out.println(request.getParameter("Country"));
+    String CountryCode = request.getParameter("Country");
+	session.putValue("CountryCode", CountryCode);
+
+	out.println("Country Code : " + session.getAttribute("CountryCode") );
+
+	int count1 = obj2.getCountryWSDL().length;
+	
+	for(int i =0;i<count1;i++)
+	{
+		 String [] SplitCountry = obj2.getCountryWSDL()[i].split(";");
+	
+		if(SplitCountry[1].compareTo(session.getAttribute("CountryCode").toString()) ==0)		 
+		 {out.println("<br> Country Name : " + SplitCountry[0].toString() );
+		 }
+
+	}	
+
+
+
 }
 if(request.getParameter("Home") != null) {
 	response.sendRedirect("index.jsp");

@@ -17,7 +17,7 @@
 WeatherService obj1 = new WeatherServiceLocator();
 WeatherInterface obj2= obj1.getWeatherPort();
 int count = obj2.getCountryWSDL().length;
-
+String CountryCode ="";
 for(int i =0;i<count;i++)
 {
 	//String[] SplitCountry = obj2.getCountryWSDL().get(i).split(";");
@@ -38,8 +38,12 @@ for(int i =0;i<count;i++)
 
 
 <%
+int count2=0;
 if(request.getParameter("Submit") != null) 
- {
+ {  
+	CountryCode =request.getParameter("Countries"); 
+	session.putValue("CountryCode",CountryCode);
+	out.println("Country Code : " + CountryCode );
 	%>
 	<h3> Select the City of which you want to find the city Code</h3>    
     
@@ -47,14 +51,16 @@ if(request.getParameter("Submit") != null)
 <select name = "Cities">
 <option value="" selected disabled hidden>Choose here</option>
 	<% 
-   String CountryCode = request.getParameter("Countries");
-   int count2 = obj2.getCityWSDL(CountryCode).length;
+    CountryCode = request.getParameter("Countries");
+    count2 = obj2.getCityWSDL(CountryCode).length;
+   
    %>
     <br><br>
    <%
+   String[] SplitCity={};
 	for(int i =0;i<count2;i++)
 	{
-    	String[] SplitCity = obj2.getCityWSDL(CountryCode)[i].split(";");
+    	 SplitCity = obj2.getCityWSDL(CountryCode)[i].split(";");
 	
 		%>
 		<option  value="<%=SplitCity[1]%>"><%=SplitCity[0] %></option>		
@@ -68,13 +74,51 @@ if(request.getParameter("Submit") != null)
     
 	<% 
    }
+String CityCode="";
 if(request.getParameter("Submit1") != null) 
 {
 	%>
-	<h4>City Code </h4>
+	<h4>City Details </h4>
 	<% 
+  out.println("Country Code : " + session.getAttribute("CountryCode") );
 	
-	out.println(request.getParameter("Cities"));
+	int count1 = obj2.getCountryWSDL().length;
+	
+	for(int i =0;i<count1;i++)
+	{
+		 String [] SplitCountry = obj2.getCountryWSDL()[i].split(";");
+	
+		if(SplitCountry[1].compareTo(session.getAttribute("CountryCode").toString()) ==0)		 
+		 {out.println("<br> Country Name : " + SplitCountry[0].toString() );
+		 }
+
+	}	
+	
+	
+	
+	
+	CityCode = request.getParameter("Cities") ;
+	
+	
+	
+	
+	out.println("<br> City Code : " + CityCode );
+	session.putValue("CityCode",CityCode);
+	
+	count2 = obj2.getCityWSDL(session.getAttribute("CountryCode").toString()).length;
+	String[] SplitCity={};
+	for(int i =0;i<count2;i++)
+	{
+    	 SplitCity = obj2.getCityWSDL(session.getAttribute("CountryCode").toString())[i].split(";");
+	
+			if(SplitCity[1].compareTo(CityCode) ==0)		 
+			 {out.println("<br> City Name : " + SplitCity[0].toString() );
+			 }
+		 
+	  
+	}
+	
+	
 }
 if(request.getParameter("Home") != null) 
   {

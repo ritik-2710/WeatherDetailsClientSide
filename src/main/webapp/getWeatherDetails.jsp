@@ -66,12 +66,54 @@ if(request.getParameter("Submit") != null)
 	<% 
    }
 if(request.getParameter("Submit1") != null) 
-{
+{ 
+	%>
+	<h4>City Details </h4>
+	<% 
+  
+	
+	int count1 = obj2.getCountryWSDL().length;
+	
+	for(int i =0;i<count1;i++)
+	{
+		 String [] SplitCountry = obj2.getCountryWSDL()[i].split(";");
+	
+		if(SplitCountry[1].compareTo(session.getAttribute("CountryCode").toString()) ==0)		 
+		 {out.println("<br> Country Name : " + SplitCountry[0].toString() );
+		 }
+
+	}	
+	
+	
+	
+	
+String	CityCode = request.getParameter("Cities") ;
+	
+	
+	
+	
+	
+	session.putValue("CityCode",CityCode);
+	
+	int count2 = obj2.getCityWSDL(session.getAttribute("CountryCode").toString()).length;
+	String[] SplitCity={};
+	for(int i =0;i<count2;i++)
+	{
+    	 SplitCity = obj2.getCityWSDL(session.getAttribute("CountryCode").toString())[i].split(";");
+	
+			if(SplitCity[1].compareTo(CityCode) ==0)		 
+			 {out.println("<br> City Name : " + SplitCity[0].toString() );
+			 }
+		 
+	  
+	}
+	
+
 	%>
 	<h4>Weather Details</h4>	
 	<% 
 	
-	String CityCode= request.getParameter("Cities");
+	 CityCode= request.getParameter("Cities");
 
 	int count3 = obj2.getWeatherDetails(CityCode).length;
 	
