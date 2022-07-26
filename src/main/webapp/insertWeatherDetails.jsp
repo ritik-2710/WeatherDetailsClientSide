@@ -104,7 +104,7 @@ if(request.getParameter("Home") != null)
     
      
     <h3> Enter the Date</h3>
-    <input type="text" id="Date" name = "Date" />
+    <input type="date" id="Date" name = "Date" />
     <br><br>
     
     <h3> Enter the temperature</h3>
